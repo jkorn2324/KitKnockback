@@ -16,6 +16,7 @@ use kitkb\Player\KitKbPlayer;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
+use synapse\Player;
 
 class KitCommand extends Command
 {
@@ -36,19 +37,28 @@ class KitCommand extends Command
     {
         $msg = null;
 
-        if($sender instanceof KitKbPlayer) {
+        if($sender instanceof Player) {
+
             if(isset($args[0])) {
                 $name = strval($args[0]);
                 $kitHandler = KitKb::getKitHandler();
                 if($kitHandler->isKit($name)) {
                     $kit = $kitHandler->getKit($name);
                     $p = $sender->getPlayer();
-                    if(!$sender->hasKit()) {
+                    if(!$p instanceof KitKbPlayer) {
+                        $msg = TextFormat::RED . "Received kit, but custom knocback isn't enabled due to PocketMine bug.";
                         $kit->giveTo($p);
                     } else {
-                        $msg = TextFormat::RED . 'Failed to receive kit. Reason: Already have kit (Use /kill to fix).';
+                        if(!$p->hasKit()) {
+                            $kit->giveTo($p);
+                        } else {
+                            $msg = TextFormat::RED . 'Failed to receive kit. Reason: Already have kit (Use /kill to fix).';
+                        }
                     }
-                } else $msg = TextFormat::RED . 'Failed to receive kit. Reason: Kit does not exist.';
+
+                } else {
+                    $msg = TextFormat::RED . 'Failed to receive kit. Reason: Kit does not exist.';
+                }
             }
         } else {
             $msg = KitKb::getConsoleMsg();

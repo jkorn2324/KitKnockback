@@ -14,6 +14,7 @@ use kitkb\KitKb;
 use kitkb\Player\KitKbPlayer;
 use pocketmine\entity\Effect;
 use pocketmine\item\Item;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
 class Kit
@@ -65,12 +66,14 @@ class Kit
     }
 
     /**
-     * @param KitKbPlayer $player
+     * @param Player $player
      * @param bool $message
      */
-    public function giveTo(KitKbPlayer $player, bool $message = true) {
+    public function giveTo(Player $player, bool $message = true) {
 
-        $player->setCurrentKit($this);
+        if($player instanceof KitKbPlayer) {
+            $player->setCurrentKit($this);
+        }
 
         $inventory = $player->getInventory();
 

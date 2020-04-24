@@ -12,10 +12,10 @@ namespace kitkb\commands;
 
 
 use kitkb\KitKb;
-use kitkb\Player\KitKbPlayer;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
+use synapse\Player;
 
 class CreateKitCommand extends Command
 {
@@ -37,7 +37,7 @@ class CreateKitCommand extends Command
     {
         $msg = null;
 
-        if($sender instanceof KitKbPlayer) {
+        if($sender instanceof Player) {
             if($this->testPermission($sender)) {
                 if(isset($args[0])) {
                     $name = strval($args[0]);
