@@ -1,0 +1,12 @@
+name: KitKB
+main: kitkb\KitKb
+version: 1.0.0
+api: "2.0.0"
+author: jkorn
+description: "A kit plugin with custom knockback."
+website: "https://github.com/jkorn2324"
+
+permissions:
+  permission.kit:
+    descipriont: "Allows players to create/delete kits."
+    default: op
