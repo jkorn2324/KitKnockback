@@ -25,38 +25,55 @@ use pocketmine\utils\TextFormat;
 class KitKb extends PluginBase
 {
 
-    private $dataFolder;
+    const ARMOR_INDEXES = [
+        'helmet',
+        'chestplate',
+        'leggings',
+        'boots'
+    ];
 
+    /** @var string */
+    private $dataFolder = "";
+
+    /** @var KitHandler */
     private static $kitHandler;
 
     public function onEnable()
     {
-        parent::onEnable();
-        $this->getServer()->getPluginManager()->registerEvents(new KitKbListener(), $this);
         $this->initDataFolder();
+
         self::$kitHandler = new KitHandler($this);
+
         $this->registerCommands();
+        new KitKbListener($this);
     }
 
+    /**
+     * Initializes the data folder.
+     */
     private function initDataFolder() {
         $this->dataFolder = $this->getDataFolder();
-        if(!is_dir($this->dataFolder))
+        if(!is_dir($this->dataFolder)) {
             mkdir($this->dataFolder);
-    }
-
-    public function onDisable()
-    {
-        parent::onDisable();
+        }
     }
 
     /**
      * @return KitHandler
+     *
+     * Gets the kit handler.
      */
     public static function getKitHandler() {
         return self::$kitHandler;
     }
 
-    private function registerCommands() {
+    /**
+     * Registers the commands to the server.
+     *
+     * @return void
+     */
+    private function registerCommands()
+    {
         $commandMap = $this->getServer()->getCommandMap();
         $commandMap->register('createKit', new CreateKitCommand());
         $commandMap->register('giveKit', new KitCommand());
@@ -66,40 +83,26 @@ class KitKb extends PluginBase
     /**
      * @param Player|KitKbPlayer $player
      * @return array
+     *
+     * Helper function used to convert an inventory to an array.
      */
     public static function inventoryToArray($player) {
 
         $inventory = $player->getInventory();
 
-        $items = [];
-        $armor = [];
-
-        $size = $inventory->getSize();
-
-        for($i = 0; $i < $size; $i++) {
-            $item = $inventory->getItem($i);
-            $items[] = $item;
-        }
-
-        for($i = 0; $i < 4; $i++) {
-            $item = $inventory->getArmorItem($i);
-            $armor[] = $item;
-        }
-
-        return ['items' => $items, 'armor' => $armor];
+        return [
+            'items' => $inventory->getContents(),
+            'armor' => $inventory->getArmorContents()
+        ];
     }
 
     /**
      * @param Item $item
      * @return string
+     *
+     * Converts an item to a string.
      */
     public static function itemToStr(Item $item) {
-
-        $id = $item->getId();
-
-        $meta = $item->getDamage();
-
-        $count = $item->getCount();
 
         $enchants = $item->getEnchantments();
 
@@ -111,20 +114,20 @@ class KitKb extends PluginBase
             $size--;
             $count = 0;
             foreach($enchants as $enchant) {
-                $id = $enchant->getId();
-                $level = $enchant->getLevel();
                 $comma = $count === $size ? '' : ',';
-                $str = "$id:$level";
+                $str = "{$enchant->getId()}:{$enchant->getLevel()}";
                 $enchantStr .= $str . $comma;
             }
         }
 
-        return "$id:$count:$meta" . (($size > 0) ? "-$enchantStr" : '');
+        return "{$item->getId()}:{$item->getCount()}:{$item->getDamage()}" . (($size > 0) ? "-$enchantStr" : '');
     }
 
     /**
      * @param string $string
      * @return Item|null
+     *
+     * Converts a string to an item.
      */
     public static function strToItem(string $string) {
 
@@ -140,9 +143,9 @@ class KitKb extends PluginBase
             foreach($enchantsSplit as $e) {
                 $enchantData = explode(':', strval($e));
                 if(isset($enchantData[0], $enchantData[1])) {
-                    $id = intval($enchantData[0]);
+                    $enchantID = intval($enchantData[0]);
                     $level = intval($enchantData[1]);
-                    $enchant = Enchantment::getEnchantment($id)->setLevel($level);
+                    $enchant = Enchantment::getEnchantment($enchantID)->setLevel($level);
                     $enchants[] = $enchant;
                 }
             }
@@ -153,22 +156,23 @@ class KitKb extends PluginBase
         $item = null;
 
         if(isset($itemData[0])) {
+
             $id = intval($itemData[0]);
             $count = 1;
             $meta = 0;
             if(isset($itemData[1])) {
                 $count = intval($itemData[1]);
-                if(isset($itemData[2]))
+                if(isset($itemData[2])) {
                     $meta = intval($itemData[2]);
+                }
             }
 
             $item = Item::get($id, $meta, $count);
 
-            $size = count($enchants);
-
-            if($size > 0) {
-                foreach($enchants as $e)
+            if(count($enchants) > 0) {
+                foreach($enchants as $e) {
                     $item->addEnchantment($e);
+                }
             }
         }
 
@@ -180,36 +184,40 @@ class KitKb extends PluginBase
      * @return string
      */
     public static function effectToStr(Effect $effect) {
-        $duration = $effect->getDuration();
-        $id = $effect->getId();
-        $amp = $effect->getAmplifier();
-        return "$id:$amp:$duration";
+        return "{$effect->getId()}:{$effect->getAmplifier()}:{$effect->getDuration()}";
     }
 
     /**
      * @param string $string
      * @return Effect|null
+     *
+     * Converts a string to an effect.
      */
     public static function strToEffect(string $string) {
         $effectData = explode(':', $string);
-        $effect = null;
         if(isset($effectData[0])) {
             $id = intval($effectData[0]);
             $amplifier = 0;
             $duration = self::minutesToTicks(5);
             if(isset($effectData[1])) {
                 $amplifier = intval($effectData[1]);
-                if(isset($effectData[2]))
+                if(isset($effectData[2])) {
                     $duration = intval($effectData[2]);
+                }
             }
-            $effect = Effect::getEffect($id)->setDuration($duration)->setAmplifier($amplifier);
+            $effect = Effect::getEffect($id);
+            if($effect !== null) {
+                return $effect->setDuration($duration)->setAmplifier($amplifier);
+            }
         }
-        return $effect;
+        return null;
     }
 
     /**
      * @param int $minutes
      * @return float|int
+     *
+     * Helper function used to convert minutes to ticks.
      */
     public static function minutesToTicks(int $minutes) {
         return $minutes * 1200;
@@ -218,6 +226,8 @@ class KitKb extends PluginBase
     /**
      * @param int $seconds
      * @return float|int
+     *
+     * Helper function used to convert seconds to ticks.
      */
     public static function secondsToTicks(int $seconds) {
         return $seconds * 20;
@@ -226,18 +236,26 @@ class KitKb extends PluginBase
     /**
      * @param int|string $index
      * @return int|string
+     *
+     * Gets the armor string.
      */
     public static function getArmorStr($index) {
 
-        $arr = [0 => 'helmet', 1 => 'chestplate', 2 => 'leggings', 3 => 'boots'];
+        $arr = self::ARMOR_INDEXES;
 
-        if(is_string($index))
-            $arr = ['helmet' => 0, 'chestplate' => 1, 'leggings' => 2, 'boots' => 3];
+        if(is_string($index)) {
+            $arr = array_flip($arr);
+        }
 
         $index = (is_int($index) ? $index % 4 : $index);
         return $arr[$index];
     }
 
+    /**
+     * @return string
+     *
+     * Gets the console message.
+     */
     public static function getConsoleMsg() : string {
         return TextFormat::RED . 'Console cannot use this command.';
     }

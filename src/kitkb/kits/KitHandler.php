@@ -38,19 +38,22 @@ class KitHandler
         $this->initConfig();
     }
 
+    /**
+     * Initializes the configuration of the kit handler & initializes the kits.
+     */
     private function initConfig() {
 
         $this->config = new Config($this->path, Config::YAML, []);
 
-        if(!file_exists($this->path))
+        if(!file_exists($this->path)) {
             $this->config->save();
-        else {
+        } else {
             $keys = $this->config->getAll(true);
             foreach($keys as $key) {
-                $key = strval($key);
-                $kit = $this->parseKit($key);
-                if($kit !== null)
+                $kit = $this->parseKit((string)$key);
+                if($kit !== null) {
                     $this->kits[$key] = $kit;
+                }
             }
         }
     }
@@ -69,29 +72,24 @@ class KitHandler
 
             if(isset($value['items'], $value['armor'], $value['effects'], $value['kb'])) {
 
-                $items = [];
-                $armor = [];
-                $effects = [];
-
                 $itemData = $value['items'];
                 $armorData = $value['armor'];
                 $effectsData = $value['effects'];
                 $kbData = $value['kb'];
 
+                $items = [];
                 foreach($itemData as $iData) {
                     $item = KitKb::strToItem(strval($iData));
                     $items[] = $item;
                 }
 
-                $keys = array_keys($armorData);
-
-                foreach($keys as $key) {
-                    $key = strval($key);
-                    $value = $armorData[$key];
+                $armor = [];
+                foreach($armorData as $key => $value) {
                     $index = KitKb::getArmorStr($key);
                     $armor[$index] = KitKb::strToItem($value);
                 }
 
+                $effects = [];
                 foreach($effectsData as $eData) {
                     $effect = KitKb::strToEffect($eData);
                     $effects[] = $effect;
@@ -115,17 +113,13 @@ class KitHandler
     /**
      * @param string $name
      * @param Player|KitKbPlayer $player
+     *
+     * Creates a new kit.
      */
     public function createKit(string $name, $player) {
 
         $invArr = KitKb::inventoryToArray($player);
-
-        $items = $invArr['items'];
-        $armor = $invArr['armor'];
-
-        $effects = $player->getEffects();
-
-        $kit = new Kit($name, $items, $armor, $effects);
+        $kit = new Kit($name, $invArr['items'], $invArr['armor'], $player->getEffects());
 
         if(!$this->config->exists($name)) {
             $map = $kit->toArray();
@@ -138,11 +132,14 @@ class KitHandler
 
     /**
      * @param string $name
+     *
+     * Deletes the kits.
      */
     public function deleteKit(string $name) {
 
-        if(isset($this->kits[$name]))
+        if(isset($this->kits[$name])) {
             unset($this->kits[$name]);
+        }
 
         if($this->config->exists($name)) {
             $this->config->remove($name);
@@ -153,17 +150,24 @@ class KitHandler
     /**
      * @param string $kit
      * @return Kit|null
+     *
+     * Gets the kit based on its name.
      */
     public function getKit(string $kit) {
+
         $result = null;
-        if(isset($this->kits[$kit]))
+        if(isset($this->kits[$kit])) {
             $result = $this->kits[$kit];
+        }
+
         return $result;
     }
 
     /**
      * @param string $kit
      * @return bool
+     *
+     * Determines if it's a kit.
      */
     public function isKit(string $kit) {
         return isset($this->kits[$kit]);

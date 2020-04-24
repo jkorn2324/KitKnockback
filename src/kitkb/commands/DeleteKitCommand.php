@@ -38,19 +38,26 @@ class DeleteKitCommand extends Command
 
         if($sender instanceof KitKbPlayer) {
             if($this->testPermission($sender)) {
-                $size = count($args);
-                if($size === 1 and isset($args[0])) {
+                if(isset($args[0])) {
                     $name = strval($args[0]);
                     $kitHandler = KitKb::getKitHandler();
                     if($kitHandler->isKit($name)) {
                         $kitHandler->deleteKit($name);
                         $msg = TextFormat::GREEN . 'Successfully deleted a kit.';
-                    } else $msg = TextFormat::RED . 'Failed to delete kit. Reason: Kit does not exist.';
-                } else $msg = $this->getUsage();
+                    } else {
+                        $msg = TextFormat::RED . 'Failed to delete kit. Reason: Kit does not exist.';
+                    }
+                } else {
+                    $msg = $this->getUsage();
+                }
             }
-        } else $msg = KitKb::getConsoleMsg();
+        } else {
+            $msg = KitKb::getConsoleMsg();
+        }
 
-        if($msg !== null) $sender->sendMessage($msg);
+        if($msg !== null) {
+            $sender->sendMessage($msg);
+        }
 
         return true;
     }

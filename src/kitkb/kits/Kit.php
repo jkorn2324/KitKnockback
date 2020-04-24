@@ -75,7 +75,6 @@ class Kit
         $inventory = $player->getInventory();
 
         $itemSize = count($this->items);
-
         $armorSize = count($this->armor);
 
         for($i = 0; $i < $itemSize; $i++) {
@@ -88,31 +87,30 @@ class Kit
             $inventory->setArmorItem($i, $item);
         }
 
-        foreach($this->effects as $effect)
+        foreach($this->effects as $effect) {
             $player->addEffect($effect);
+        }
 
-        if($message === true)
+        if($message) {
             $player->sendMessage(TextFormat::GREEN . '[Kit-KB] Successfully Received ' . $this->name . '!');
+        }
     }
 
     /**
      * @return array
+     *
+     * Exports the kit to an array.
      */
     public function toArray() {
 
         $items = [];
-
-        $armor = [];
-
-        $effects = [];
-
         foreach($this->items as $item) {
             $str = KitKb::itemToStr($item);
             $items[] = $str;
         }
 
+        $armor = [];
         $size = count($this->armor);
-
         for($i = 0; $i < $size; $i++) {
             $key = KitKb::getArmorStr($i);
             $item = $this->armor[$i];
@@ -120,6 +118,7 @@ class Kit
             $armor[$key] = $value;
         }
 
+        $effects = [];
         foreach($this->effects as $effect) {
             $value = KitKb::effectToStr($effect);
             $effects[] = $value;

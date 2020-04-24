@@ -42,6 +42,8 @@ class KbInfo
 
     /**
      * @return int
+     *
+     * Gets the attack delay.
      */
     public function getSpeed() {
         return $this->speed;
@@ -49,6 +51,8 @@ class KbInfo
 
     /**
      * @return float|int
+     *
+     * Gets the y kb.
      */
     public function getYKb() {
         return $this->yKb;
@@ -56,6 +60,8 @@ class KbInfo
 
     /**
      * @return float|int
+     *
+     * Gets the x kb.
      */
     public function getXKb() {
         return $this->xKb;
@@ -82,6 +88,8 @@ class KbInfo
 
     /**
      * @return array
+     *
+     * Exports the kit to an array.
      */
     public function toArray() {
         return [

@@ -39,17 +39,22 @@ class CreateKitCommand extends Command
 
         if($sender instanceof KitKbPlayer) {
             if($this->testPermission($sender)) {
-                $size = count($args);
-                if($size === 1 and isset($args[0])) {
+                if(isset($args[0])) {
                     $name = strval($args[0]);
                     $kitHandler = KitKb::getKitHandler();
                     if(!$kitHandler->isKit($name)) {
                         $kitHandler->createKit($name, $sender->getPlayer());
                         $msg = TextFormat::GREEN . 'Successfully created a new kit.';
-                    } else $msg = TextFormat::RED . 'Failed to create a new kit. Reason: Kit already exists.';
-                } else $msg = $this->getUsage();
+                    } else {
+                        $msg = TextFormat::RED . 'Failed to create a new kit. Reason: Kit already exists.';
+                    }
+                } else {
+                    $msg = $this->getUsage();
+                }
             }
-        } else $msg = KitKb::getConsoleMsg();
+        } else {
+            $msg = KitKb::getConsoleMsg();
+        }
 
         if($msg !== null) $sender->sendMessage($msg);
 

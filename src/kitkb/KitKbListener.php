@@ -19,6 +19,15 @@ use pocketmine\event\player\PlayerDeathEvent;
 class KitKbListener implements Listener
 {
 
+    /** @var KitKb */
+    private $kitKb;
+
+    public function __construct(KitKb $kb)
+    {
+        $this->kitKb = $kb;
+        $kb->getServer()->getPluginManager()->registerEvents($this, $kb);
+    }
+
     /**
      * @param PlayerCreationEvent $event
      */

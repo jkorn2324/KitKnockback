@@ -37,21 +37,26 @@ class KitCommand extends Command
         $msg = null;
 
         if($sender instanceof KitKbPlayer) {
-            $size = count($args);
-            if($size === 1 and isset($args[0])) {
+            if(isset($args[0])) {
                 $name = strval($args[0]);
                 $kitHandler = KitKb::getKitHandler();
                 if($kitHandler->isKit($name)) {
                     $kit = $kitHandler->getKit($name);
                     $p = $sender->getPlayer();
-                    if(!$sender->hasKit())
+                    if(!$sender->hasKit()) {
                         $kit->giveTo($p);
-                    else $msg = TextFormat::RED . 'Failed to receive kit. Reason: Already have kit (Use /kill to fix).';
+                    } else {
+                        $msg = TextFormat::RED . 'Failed to receive kit. Reason: Already have kit (Use /kill to fix).';
+                    }
                 } else $msg = TextFormat::RED . 'Failed to receive kit. Reason: Kit does not exist.';
             }
-        } else $msg = KitKb::getConsoleMsg();
+        } else {
+            $msg = KitKb::getConsoleMsg();
+        }
 
-        if($msg !== null) $sender->sendMessage($msg);
+        if($msg !== null) {
+            $sender->sendMessage($msg);
+        }
 
         return true;
     }
