@@ -14,8 +14,8 @@ namespace kitkb\commands;
 use kitkb\KitKb;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat;
-use synapse\Player;
 
 class CreateKitCommand extends Command
 {
