@@ -173,4 +173,13 @@ class KitHandler
         return isset($this->kits[$kit]);
     }
 
+    /**
+     * @return Kit[]
+     *
+     * Gets the kits from the list.
+     */
+    public function getKits()
+    {
+        return $this->kits;
+    }
 }
