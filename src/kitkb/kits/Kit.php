@@ -82,16 +82,26 @@ class Kit
 
         for($i = 0; $i < $itemSize; $i++) {
             $item = $this->items[$i];
-            $inventory->setItem($i, $item);
+            if($item !== null) {
+                $inventory->setItem($i, $item);
+            } else {
+                $inventory->setItem($i, Item::get(Item::AIR));
+            }
         }
 
         for($i = 0; $i < $armorSize; $i++) {
             $item = $this->armor[$i];
-            $inventory->setArmorItem($i, $item);
+            if($item !== null) {
+                $inventory->setArmorItem($i, $item);
+            } else {
+                $inventory->setArmorItem($i, Item::get(Item::AIR));
+            }
         }
 
         foreach($this->effects as $effect) {
-            $player->addEffect($effect);
+            if($effect !== null) {
+                $player->addEffect($effect);
+            }
         }
 
         if($message) {

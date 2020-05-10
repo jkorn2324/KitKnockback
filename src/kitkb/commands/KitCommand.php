@@ -15,8 +15,8 @@ use kitkb\KitKb;
 use kitkb\Player\KitKbPlayer;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat;
-use synapse\Player;
 
 class KitCommand extends Command
 {
