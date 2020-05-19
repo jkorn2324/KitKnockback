@@ -13,6 +13,7 @@ namespace kitkb;
 use kitkb\commands\CreateKitCommand;
 use kitkb\commands\DeleteKitCommand;
 use kitkb\commands\KitCommand;
+use kitkb\commands\ListKitCommand;
 use kitkb\kits\KitHandler;
 use kitkb\Player\KitKbPlayer;
 use pocketmine\entity\Effect;
@@ -78,6 +79,7 @@ class KitKb extends PluginBase
         $commandMap->register('createKit', new CreateKitCommand());
         $commandMap->register('giveKit', new KitCommand());
         $commandMap->register('deleteKit', new DeleteKitCommand());
+        $commandMap->register('listkits', new ListKitCommand());
     }
 
     /**

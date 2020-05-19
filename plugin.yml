@@ -8,5 +8,8 @@ website: "https://github.com/jkorn2324"
 
 permissions:
   permission.kit:
-    descipriont: "Allows players to create/delete kits."
+    description: "Allows players to create/delete kits."
     default: op
+  permission.kit.list:
+    default: true
+    description: "Allows players to view the list of the kits."
