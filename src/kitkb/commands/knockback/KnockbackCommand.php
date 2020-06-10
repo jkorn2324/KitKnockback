@@ -49,28 +49,14 @@ abstract class KnockbackCommand extends Command
             return false;
         }
 
-        switch($this->type)
+
+        if(!is_numeric($value))
         {
-            case KitKb::KB_X:
-            case KitKb::KB_Y:
-                $checker = is_float($value) || is_int($value);
-                break;
-            default:
-                $checker = is_int($value);
+            $type = $this->type === KitKb::KB_SPEED ? "whole number (EX: 5, 10)" : "decimal (0.4)";
+            $sender->sendMessage(TextFormat::RED . "Failed to update the kit's kb. The input value must be a {$type}.");
+            return false;
         }
 
-        if(isset($checker))
-        {
-
-            if(!$checker)
-            {
-                $type = $this->type === KitKb::KB_SPEED ? "whole number (EX: 5, 10)" : "decimal (0.4)";
-                $sender->sendMessage(TextFormat::RED . "Failed to update the kit's kb. The input value must be a {$type}.");
-            }
-            
-            return $checker;
-        }
-
-        return false;
+        return true;
     }
 }

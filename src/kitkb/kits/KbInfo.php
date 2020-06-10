@@ -72,13 +72,13 @@ class KbInfo
 
         switch($key) {
             case KitKb::KB_X:
-                $this->xKb = $val;
+                $this->xKb = (float)$val;
                 break;
             case KitKb::KB_Y:
-                $this->yKb = $val;
+                $this->yKb = (float)$val;
                 break;
             case KitKb::KB_SPEED:
-                $this->speed = $val;
+                $this->speed = (int)$val;
                 break;
         }
     }
@@ -103,7 +103,6 @@ class KbInfo
     public function display()
     {
         $displayArray = [
-            TextFormat::BLUE . "Kit Information" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->name,
             TextFormat::GOLD . "KB-X" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->xKb,
             TextFormat::GOLD . "KB-Y" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->yKb,
             TextFormat::GOLD . "KB-Speed" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->speed

@@ -36,7 +36,7 @@ class KBSpeedCommand extends KnockbackCommand
         $kit->getKbInfo()->update(KitKb::KB_SPEED, $value);
         $kitManager->updateKit($kit);
 
-        $sender->sendMessage(TextFormat::GREEN . " Successfully updated the kb speed of the kit.");
+        $sender->sendMessage(TextFormat::GREEN . "Successfully updated the kb speed of the kit.");
 
         return true;
     }

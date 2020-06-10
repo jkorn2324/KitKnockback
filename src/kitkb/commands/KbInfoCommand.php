@@ -44,7 +44,10 @@ class KbInfoCommand extends Command
             }
 
             $kbInfo = $kitManager->getKit($kitName)->getKbInfo();
-            $sender->sendMessage($kbInfo->display());
+            $sender->sendMessage(
+                TextFormat::BLUE . "Kit Information" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE .
+                $kitName . "\n" . $kbInfo->display()
+            );
         }
 
         return true;
