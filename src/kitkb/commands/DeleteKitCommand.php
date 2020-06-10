@@ -21,7 +21,7 @@ class DeleteKitCommand extends Command
 {
     public function __construct()
     {
-        parent::__construct('create-kit', 'Creates a kit with all items from inventory.', 'Usage: /create-kit <name>', ['kit-create']);
+        parent::__construct('delete-kit', 'Deletes a kit from the list.', 'Usage: /delete-kit <name>', ['kit-delete']);
         parent::setPermission('permission.kit.create');
     }
 

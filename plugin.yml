@@ -1,6 +1,6 @@
 name: KitKB
 main: kitkb\KitKb
-version: 1.0.1
+version: 1.0.3
 api: "2.0.0"
 author: jkorn
 description: "A kit plugin with custom knockback."
