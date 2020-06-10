@@ -15,7 +15,7 @@ permissions:
     description: "Allows players to view the list of the kits."
   permission.kit.kb:
     default: op
-    description: "Allows players to edit the knockback of the kits while in game.";
+    description: "Allows players to edit the knockback of the kits while in game."
   permission.kit.kbinfo:
     default: op
     description: "Allows players to view the knockback information of a kit."
