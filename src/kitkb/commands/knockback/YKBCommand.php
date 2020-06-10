@@ -35,9 +35,9 @@ class YKBCommand extends KnockbackCommand
         $value = (float)$args[1];
 
         $kit->getKbInfo()->update(KitKb::KB_Y, $value);
-        $kitManager->update($kit);
+        $kitManager->updateKit($kit);
 
-        $sender->sendMessage(TextFormat::GREEN . " Successfully updated the y-kb of the kit.")
+        $sender->sendMessage(TextFormat::GREEN . " Successfully updated the y-kb of the kit.");
 
         return true;
     }

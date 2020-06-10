@@ -19,7 +19,7 @@ abstract class KnockbackCommand extends Command
     public function __construct(string $type, string $description)
     {
         parent::__construct("kb-{$type}", $description, "Usage: kb-{$type} <name> <value> ", ["{$type}-kb"]);
-        parent::setPermission("permission.kit.kb.{$name}");
+        parent::setPermission("permission.kit.kb.{$type}");
         $this->type = $type;
     }
 
@@ -65,7 +65,7 @@ abstract class KnockbackCommand extends Command
             if(!$checker)
             {
                 $type = $this->type === KitKb::KB_SPEED ? "whole number (EX: 5, 10)" : "decimal (0.4)";
-                $sender->sendMessage(TextFormat::RED . "Failed to update the kit's kb. The input value must be a {$type}.")
+                $sender->sendMessage(TextFormat::RED . "Failed to update the kit's kb. The input value must be a {$type}.");
             }
             
             return $checker;
