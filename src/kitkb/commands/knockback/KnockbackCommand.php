@@ -19,7 +19,7 @@ abstract class KnockbackCommand extends Command
     public function __construct(string $type, string $description)
     {
         parent::__construct("kb-{$type}", $description, "Usage: kb-{$type} <name> <value> ", ["{$type}-kb"]);
-        parent::setPermission("permission.kit.kb.{$type}");
+        parent::setPermission("permission.kit.kb");
         $this->type = $type;
     }
 

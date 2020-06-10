@@ -17,6 +17,7 @@ use kitkb\commands\ListKitCommand;
 use kitkb\commands\knockback\XKBCommand;
 use kitkb\commands\knockback\YKBCommand;
 use kitkb\commands\knockback\KBSpeedCommand;
+use kitkb\commands\KbInfoCommand;
 use kitkb\kits\KitHandler;
 use kitkb\Player\KitKbPlayer;
 use pocketmine\entity\Effect;
@@ -90,6 +91,7 @@ class KitKb extends PluginBase
         $commandMap->register('xkb', new XKBCommand());
         $commandMap->register('ykb', new YKBCommand());
         $commandMap->register('speed', new KBSpeedCommand());
+        $commandMap->register('kbinfo', new KbInfoCommand());
     }
 
     /**

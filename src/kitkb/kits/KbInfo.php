@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace kitkb\kits;
 
 use kitkb\KitKb;
-
+use pocketmine\utils\TextFormat;
 
 class KbInfo
 {
@@ -94,5 +94,21 @@ class KbInfo
             'ykb' => $this->yKb,
             'speed' => $this->speed
         ];
+    }
+
+    /**
+     * Displays the kit for the user.
+     * @return string
+     */
+    public function display()
+    {
+        $displayArray = [
+            TextFormat::BLUE . "Kit Information" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->name,
+            TextFormat::GOLD . "KB-X" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->xKb,
+            TextFormat::GOLD . "KB-Y" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->yKb,
+            TextFormat::GOLD . "KB-Speed" . TextFormat::DARK_GRAY . ": " . TextFormat::WHITE . $this->speed
+        ];
+
+        return implode("\n", $displayArray);
     }
 }
