@@ -36,13 +36,14 @@ class KbInfoCommand extends Command
             }
 
             $kitName = $args[0];
-            if(!KitKb::getKitHandler()->isKit($kitName))
+            $kitManager = KitKb::getKitHandler();
+            if(!$kitManager->isKit($kitName))
             {
                 $sender->sendMessage(TextFormat::RED . "Unable to gather info. Reason: The kit doesn't exist.");
                 return true;
             }
 
-            $kbInfo = KitKb::getKit($kitName)->getKbInfo();
+            $kbInfo = $kitManager->getKit($kitName)->getKbInfo();
             $sender->sendMessage($kbInfo->display());
         }
 
