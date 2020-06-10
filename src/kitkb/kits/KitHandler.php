@@ -131,6 +131,24 @@ class KitHandler
     }
 
     /**
+     * @param Kit $kit
+     * 
+     * Updates the kit.
+     */
+    public function updateKit(Kit $kit) 
+    {
+        $name = $kit->getName();
+        if(!isset($this->kits[$name]))
+        {
+            return;
+        }
+
+        $this->kits[$name] = $kit;
+        $this->config->set($name, $kit->toArray());
+        $this->config->save();
+    }
+
+    /**
      * @param string $name
      *
      * Deletes the kits.

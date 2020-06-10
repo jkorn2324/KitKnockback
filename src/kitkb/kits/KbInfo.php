@@ -10,14 +10,11 @@ declare(strict_types=1);
 
 namespace kitkb\kits;
 
+use kitkb\KitKb;
+
 
 class KbInfo
 {
-
-    public static $XKB = 'x';
-    public static $YKB = 'y';
-    public static $SPEED = 'speed';
-
     /* @var float|int */
     private $xKb;
 
@@ -74,13 +71,13 @@ class KbInfo
     public function update(string $key, $val) {
 
         switch($key) {
-            case self::$XKB:
+            case KitKb::KB_X:
                 $this->xKb = $val;
                 break;
-            case self::$YKB:
+            case KitKb::KB_Y:
                 $this->yKb = $val;
                 break;
-            case self::$SPEED:
+            case KitKb::KB_SPEED:
                 $this->speed = $val;
                 break;
         }

@@ -59,6 +59,8 @@ class KitCommand extends Command
                 } else {
                     $msg = TextFormat::RED . 'Failed to receive kit. Reason: Kit does not exist.';
                 }
+            } else {
+                $msg = $this->getUsage();
             }
         } else {
             $msg = KitKb::getConsoleMsg();

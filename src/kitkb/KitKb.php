@@ -14,6 +14,9 @@ use kitkb\commands\CreateKitCommand;
 use kitkb\commands\DeleteKitCommand;
 use kitkb\commands\KitCommand;
 use kitkb\commands\ListKitCommand;
+use kitkb\commands\knockback\XKBCommand;
+use kitkb\commands\knockback\YKBCommand;
+use kitkb\commands\knockback\KBSpeedCommand;
 use kitkb\kits\KitHandler;
 use kitkb\Player\KitKbPlayer;
 use pocketmine\entity\Effect;
@@ -25,6 +28,10 @@ use pocketmine\utils\TextFormat;
 
 class KitKb extends PluginBase
 {
+
+    const KB_Y = "y";
+    const KB_X = "x";
+    const KB_SPEED = "speed";
 
     const ARMOR_INDEXES = [
         'helmet',
@@ -80,6 +87,9 @@ class KitKb extends PluginBase
         $commandMap->register('giveKit', new KitCommand());
         $commandMap->register('deleteKit', new DeleteKitCommand());
         $commandMap->register('listkits', new ListKitCommand());
+        $commandMap->register('xkb', new XKBCommand());
+        $commandMap->register('ykb', new YKBCommand());
+        $commandMap->register('speed', new KBSpeedCommand());
     }
 
     /**
