@@ -24,6 +24,7 @@ class KitCommand extends Command
     public function __construct()
     {
         parent::__construct('kit', 'Gives the kit to the user of the command.', 'Usage: /kit <name>', ['give-kit', 'kit-give']);
+        parent::setPermission("permission.kit.give");
     }
 
     /**
@@ -38,6 +39,11 @@ class KitCommand extends Command
         $msg = null;
 
         if($sender instanceof Player) {
+
+            if(!$this->testPermission($sender))
+            {
+                return true;
+            }
 
             if(isset($args[0])) {
                 $name = strval($args[0]);
